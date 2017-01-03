@@ -1,0 +1,48 @@
+version: '2'
+services:
+
+  # The Application
+  app:
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    working_dir: /var/www
+    volumes_from:
+      - appdata
+    volumes:
+      - /var/www/storage
+      - /var/www/bootstrap/cache
+      - /var/www/public/uploads
+    environment:
+      - "DB_PORT=3306"
+      - "DB_HOST=database"
+
+  # The Web Server
+  web:
+    build:
+      context: ./
+      dockerfile: web.dockerfile
+    working_dir: /var/www
+    volumes_from:
+      - app
+      - appdata
+    ports:
+      - 8080:80
+
+  # The Database
+  database:
+    image: mysql:5.6
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=secret"
+      - "MYSQL_DATABASE=homestead"
+      - "MYSQL_USERNAME=homestead"
+
+  appdata:
+    build:
+      context: ./
+      dockerfile: appdata.dockerfile
+
+volumes:
+  dbdata:

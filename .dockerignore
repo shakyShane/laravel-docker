@@ -1,0 +1,7 @@
+/.git
+/.idea
+/node_modules
+.env
+storage/app/**
+storage/framework/**
+storage/logs/**
