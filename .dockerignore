@@ -2,9 +2,7 @@
 .idea
 .env
 node_modules
-storage/app/public/**
-storage/logs/**
+vendor
 storage/framework/cache/**
 storage/framework/sessions/**
 storage/framework/views/**
-vendor

@@ -7,13 +7,10 @@ services:
     working_dir: /var/www
     volumes:
       - /var/www/storage
-      - /var/www/public/uploads
       - /var/www/bootstrap/cache
-      - .env:/var/www/.env
+    env_file: '.env'
     environment:
-      - "DB_PORT=3306"
       - "DB_HOST=database"
-      - "REDIS_PORT=6379"
       - "REDIS_HOST=cache"
 
   # The Web Server

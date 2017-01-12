@@ -3,22 +3,19 @@ services:
 
   # The Application
   app:
-    build:
-      context: ./
-      dockerfile: app.dockerfile
+    image: shakyshane/laravel-php:latest
     working_dir: /var/www
     volumes:
       - ./:/var/www
     environment:
-      - "DB_PORT=3306"
       - "DB_HOST=database"
+      - "REDIS_HOST=cache"
 
   # The Web Server
   web:
-    build:
-      context: ./
-      dockerfile: web.dockerfile
-    working_dir: /var/www
+    image: nginx:1.10-alpine
+    volumes:
+      - ./vhost.conf:/etc/nginx/conf.d/default.conf
     volumes_from:
       - app
     ports:
@@ -30,11 +27,17 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
     environment:
-      - "MYSQL_ROOT_PASSWORD=secret"
       - "MYSQL_DATABASE=homestead"
-      - "MYSQL_USERNAME=homestead"
+      - "MYSQL_USER=homestead"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
     ports:
         - "33061:3306"
+
+  cache:
+    image: redis:3.0-alpine
+    ports:
+        - "63791:6379"
 
 volumes:
   dbdata:
