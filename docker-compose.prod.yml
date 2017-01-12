@@ -1,33 +1,29 @@
 version: '2'
 services:
 
-  # The Application
+  #  The Application
   app:
-    build:
-      context: ./
-      dockerfile: app.dockerfile
+    image: shakyshane/laravel-app
     working_dir: /var/www
-    volumes_from:
-      - appdata
     volumes:
       - /var/www/storage
-      - /var/www/bootstrap/cache
       - /var/www/public/uploads
+      - /var/www/bootstrap/cache
+      - .env:/var/www/.env
     environment:
       - "DB_PORT=3306"
       - "DB_HOST=database"
+      - "REDIS_PORT=6379"
+      - "REDIS_HOST=cache"
 
   # The Web Server
   web:
-    build:
-      context: ./
-      dockerfile: web.dockerfile
-    working_dir: /var/www
-    volumes_from:
-      - app
-      - appdata
+    image: shakyshane/laravel-web
+    volumes:
+      - "${LE_DIR}:/etc/letsencrypt"
     ports:
-      - 8080:80
+      - 80:80
+      - 443:443
 
   # The Database
   database:
@@ -35,14 +31,13 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
     environment:
-      - "MYSQL_ROOT_PASSWORD=secret"
       - "MYSQL_DATABASE=homestead"
-      - "MYSQL_USERNAME=homestead"
+      - "MYSQL_USER=homestead"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
 
-  appdata:
-    build:
-      context: ./
-      dockerfile: appdata.dockerfile
+  cache:
+    image: redis:3.0-alpine
 
 volumes:
   dbdata:

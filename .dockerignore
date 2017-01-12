@@ -1,7 +1,10 @@
-/.git
-/.idea
-/node_modules
+.git
+.idea
 .env
-storage/app/**
-storage/framework/**
+node_modules
+storage/app/public/**
 storage/logs/**
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
+vendor
