@@ -7,7 +7,6 @@ services:
     working_dir: /var/www
     volumes:
       - /var/www/storage
-      - /var/www/bootstrap/cache
     env_file: '.env'
     environment:
       - "DB_HOST=database"
