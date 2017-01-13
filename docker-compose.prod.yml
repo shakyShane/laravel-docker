@@ -32,6 +32,7 @@ services:
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_ROOT_PASSWORD=secret"
 
+  # redis
   cache:
     image: redis:3.0-alpine
 
