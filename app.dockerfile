@@ -9,4 +9,4 @@ RUN apt-get update && apt-get install -y libmcrypt-dev \
     && apt-get install -y nodejs
     
 COPY package*.json ./
-RUN npm instal
+RUN npm install
